@@ -1,4 +1,90 @@
+>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>miss you</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Tahoma;}
+body{background:#0b141a;color:#e9edef;height:100vh;overflow:hidden}
+.setup{background:#111b21;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.setup h1{color:#25d366;margin-bottom:20px}
+.setup input,.setup select{width:300px;padding:12px;margin:8px;border:none;border-radius:8px;background:#2a3942;color:#fff}
+.setup button{background:#25d366;color:#fff;border:none;padding:12px 30px;border-radius:20px;margin-top:15px;cursor:pointer;font-weight:bold}
+.chat-container{display:none;height:100vh;flex-direction:column;background:#0b141a}
+.header{background:#202c33;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.header img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.header.info{flex:1}
+.header.info h2{font-size:16px;color:#fff}
+.messages{flex:1;overflow-y:auto;padding:20px;background:#0b141a}
+.msg{background:#202c33;padding:8px 12px;border-radius:8px;margin:6px 0;max-width:75%}
+.msg.user{background:#005c4b;margin-left:auto}
+.msg.time{font-size:11px;color:#8696a0;text-align:left;margin-top:4px}
+.input-area{background:#202c33;padding:10px;display:flex;gap:8px}
+.input-area input{flex:1;background:#2a3942;border:none;border-radius:20px;padding:12px;color:#fff;outline:none}
+.input-area button{background:#25d366;border:none;width:45px;height:45px;border-radius:50%;cursor:pointer;color:#fff;font-size:20px}
+</style>
+</head>
+<body>
 
+<div class="setup" id="setup">
+  <h1>miss you 💜</h1>
+  <input type="text" id="aiName" placeholder="اسم الذكاء الاصطناعي" value="my love">
+  <input type="file" id="aiPhoto" accept="image/*">
+  <select id="dialect">
+    <option value="مصري">اللهجة المصرية</option>
+    <option value="سعودي">اللهجة السعودية</option>
+  </select>
+  <button onclick="startChat()">ابدأ المحادثة</button>
+</div>
+
+<div class="chat-container" id="chat">
+  <div class="header">
+    <img id="aiAvatar" src="https://i.imgur.com/8Km9tLL.png">
+    <div class="info">
+      <h2 id="aiNameHeader">my love</h2>
+      <span style="font-size:12px;color:#8696a0">متصل الان</span>
+    </div>
+  </div>
+  <div class="messages" id="messages"></div>
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="اكتب رسالة...">
+    <button onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+let aiName = "my love";
+function startChat(){
+  aiName = document.getElementById('aiName').value || "my love";
+  document.getElementById('aiNameHeader').innerText = aiName;
+  const file = document.getElementById('aiPhoto').files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = e => document.getElementById('aiAvatar').src = e.target.result;
+    reader.readAsDataURL(file);
+  }
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('chat').style.display = 'flex';
+  addMessage(aiName, `انا كنت مين في حياتك؟\nالذكريات اللي بينا كانت ايه... احكيلي كلها 😔`);
+}
+function addMessage(sender, text){
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'msg ' + (sender=='انت'? 'user' : '');
+  msgDiv.innerHTML = `<b>${sender}</b><br>${text}<div class="msg time">${new Date().toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</div>`;
+  document.getElementById('messages').appendChild(msgDiv);
+  document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+}
+function sendMessage(){
+  const input = document.getElementById('userInput');
+  if(!input.value) return;
+  addMessage('انت', input.value);
+  input.value='';
+  setTimeout(()=>{ addMessage(aiName, "انا فاهمك... كمل كلامك انا سامعك بقلبي ❤️"); }, 1000);
+}
+</script>
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
